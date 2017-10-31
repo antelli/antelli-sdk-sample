@@ -17,7 +17,7 @@ public class SamplePlugin extends AntelliPlugin {
 
     @Override
     protected boolean canAnswer(Question question) throws RemoteException {
-        return question.equals("ahoj světe") || question.containsAllOf("hello", "world");
+        return question.equals("ahoj světe") || question.containsAllWords("hello", "world");
     }
 
     @Override
