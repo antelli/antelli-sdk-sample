@@ -1,0 +1,2 @@
+include ':app', ':antelli-sdk'
+project(':antelli-sdk').projectDir = new File(settingsDir, '../antelli-sdk/sdk')
