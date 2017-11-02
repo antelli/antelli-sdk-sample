@@ -19,7 +19,7 @@
 
         <service android:name=".SamplePlugin">
             <intent-filter>
-                <action android:name="cz.antelli.assistant.ANSWER" />
+                <action android:name="io.antelli.assistant.ANSWER" />
             </intent-filter>
 
             <meta-data android:name="title" android:value="@string/plugin_title" />

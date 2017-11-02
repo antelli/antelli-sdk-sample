@@ -2,10 +2,10 @@ package cz.antelli.sampleplugin;
 
 import android.os.RemoteException;
 
-import cz.antelli.sdk.AntelliPlugin;
-import cz.antelli.sdk.model.Answer;
-import cz.antelli.sdk.model.AnswerItem;
-import cz.antelli.sdk.model.Question;
+import io.antelli.sdk.AntelliPlugin;
+import io.antelli.sdk.model.Answer;
+import io.antelli.sdk.model.AnswerItem;
+import io.antelli.sdk.model.Question;
 
 /**
  * Handcrafted by Štěpán Šonský on 31.10.2017.

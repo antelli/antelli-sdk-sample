@@ -16,6 +16,6 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
 
-        android:text="Nyní můžeš spustit Antelli a říct 'Ahoj světe'.\n\nTady může být nastavení tvého pluginu :)" />
+        android:text="Nyní můžeš spustit Antelli a říct 'Ahoj světe'.\n\nTady může být nastavení Tvého pluginu :) \n Pokud nastavení nechceš, můžeš Activitu smazat a settings vypnout v antelli_meta.xml." />
 
 </RelativeLayout>
