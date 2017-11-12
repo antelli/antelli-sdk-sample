@@ -3,6 +3,6 @@
     <string name="plugin_title">Sample Antelli Plugin</string>
     <string name="plugin_author">Štěpán Šonský</string>
     <string name="plugin_description">Příklad pluginu pro českou hlasovou asistentku Antelli.</string>
-    <string name="plugin_samples">Ahoj světe;Hello world;</string>
+    <string name="plugin_samples">Ahoj světe;Android demo;</string>
     <bool name="plugin_settings">true</bool>
 </resources>
