@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">Sample Antelli Plugin</string>
+
+    <string name="item1_title">Hello World!</string>
+    <string name="item1_subtitle">Congrats developer</string>
+    <string name="item1_text">It seems to be working</string>
+
+    <string name="item2_title">Card item</string>
+    <string name="item2_text">This is demo of the card item type</string>
+
+    <string name="item3_title">Image card item</string>
+    <string name="item3_text">This is demo of the image card item type</string>
+
+    <string name="item4_title">Item %1$d</string>
+    <string name="item4_subtitle">Gallery demo</string>
+
+    <string name="item_click">You\'ve clicked on %1$d. item</string>
+    <string name="item_gallery_click">You\'ve clicked on %1$d. item in gallery</string>
+
+    <string name="tip">Sample Tip</string>
+    <string name="tip_click">You\'ve clicked on the tip</string>
+
+    <string name="settings_note">Now you can run Antelli and say \'Hello world\'.\n\nHere, you can have settings of your plugin :)\nIf you don\'t want settings, just remove this Activity and turn of settings in antelli_meta.xml.</string>
+
+    <string-array name="keywords">
+        <item>hello world</item>
+        <item>android demo</item>
+    </string-array>
+
 </resources>

@@ -1,4 +1,4 @@
-package cz.antelli.sampleplugin;
+package io.antelli.sampleplugin;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
