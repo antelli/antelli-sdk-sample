@@ -25,5 +25,5 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.0.1'
 
     //Antelli SDK
-    compile 'io.antelli:sdk:1.0.2'
+    compile 'io.antelli:sdk:1.1.0'
 }

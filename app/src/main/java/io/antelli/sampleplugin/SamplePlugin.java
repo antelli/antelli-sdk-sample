@@ -3,6 +3,9 @@ package io.antelli.sampleplugin;
 import android.content.Context;
 import android.os.RemoteException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.antelli.sdk.AntelliPlugin;
 import io.antelli.sdk.callback.IAnswerCallback;
 import io.antelli.sdk.model.Answer;
@@ -18,8 +21,10 @@ import io.antelli.sdk.model.Tip;
 
 public class SamplePlugin extends AntelliPlugin {
 
-    private static final int ACTION_CLICK = 1;
+    private static final String ACTION_CLICK = "click";
     private static final String PARAM_NAME = "NAME";
+
+    Context langContext;
 
     @Override
     protected boolean canAnswer(Question question) throws RemoteException {
@@ -30,34 +35,55 @@ public class SamplePlugin extends AntelliPlugin {
     @Override
     protected void answer(Question question, IAnswerCallback callback) throws RemoteException {
 
-        //Get localized context (you can get strings in question's language from it)
-        Context langContext = getContext(question.getLanguage());
+        //Get localized context for multilanguage plugins (you can get strings in question's language from it)
+        langContext = getContext(question.getLanguage());
 
         //You can create Answer easily using builder pattern
         Answer answer = new Answer()
                 //Add simple conversation item
-                .addItem(new AnswerItem()
-                        .setTitle(langContext.getString(R.string.item1_title))
-                        .setSubtitle(langContext.getString(R.string.item1_subtitle))
-                        .setText(langContext.getString(R.string.item1_text))
-                        .setSpeech(langContext.getString(R.string.item1_text))
-                        .setCommand(new Command(ACTION_CLICK).putString(PARAM_NAME, langContext.getString(R.string.item_click, 1)))
-                )
+                .addItem(createSampleConversationItem())
                 //Add card item
-                .addItem(new AnswerItem()
-                        .setTitle(langContext.getString(R.string.item2_title))
-                        .setText(langContext.getString(R.string.item2_text))
-                        .setImage("http://lorempixel.com/400/200")
-                        .setType(AnswerItem.TYPE_CARD)
-                        .setCommand(new Command(ACTION_CLICK).putString(PARAM_NAME, langContext.getString(R.string.item_click, 2))))
+                .addItem(createSampleCardItem())
                 //Add card image item
-                .addItem(new AnswerItem()
-                        .setTitle(langContext.getString(R.string.item3_title))
-                        .setText(langContext.getString(R.string.item3_text))
-                        .setImage("http://lorempixel.com/400/200")
-                        .setCommand(new Command(ACTION_CLICK).putString(PARAM_NAME, langContext.getString(R.string.item_click, 3)))
-                        .setType(AnswerItem.TYPE_CARD_IMAGE));
+                .addItem(createSampleCardImageItem())
+                //Add gallery item
+                .addItem(createGalleryItem());
 
+        //Add tips to Answer
+        answer.setTips(createSampleTips());
+
+        //Publish Answer to Antelli
+        callback.publish(answer);
+    }
+
+    private AnswerItem createSampleConversationItem(){
+        return new AnswerItem()
+                .setTitle(langContext.getString(R.string.item1_title))
+                .setSubtitle(langContext.getString(R.string.item1_subtitle))
+                .setText(langContext.getString(R.string.item1_text))
+                .setSpeech(langContext.getString(R.string.item1_text))
+                .setCommand(new Command(ACTION_CLICK).putString(PARAM_NAME, langContext.getString(R.string.item_click, 1)));
+    }
+
+    private AnswerItem createSampleCardItem(){
+        return new AnswerItem()
+                .setTitle(langContext.getString(R.string.item2_title))
+                .setText(langContext.getString(R.string.item2_text))
+                .setImage("http://lorempixel.com/400/200")
+                .setType(AnswerItem.TYPE_CARD)
+                .setCommand(new Command(ACTION_CLICK).putString(PARAM_NAME, langContext.getString(R.string.item_click, 2)));
+    }
+
+    private AnswerItem createSampleCardImageItem(){
+        return new AnswerItem()
+                .setTitle(langContext.getString(R.string.item3_title))
+                .setText(langContext.getString(R.string.item3_text))
+                .setImage("http://lorempixel.com/400/200")
+                .setCommand(new Command(ACTION_CLICK).putString(PARAM_NAME, langContext.getString(R.string.item_click, 3)))
+                .setType(AnswerItem.TYPE_CARD_IMAGE);
+    }
+
+    private AnswerItem createGalleryItem(){
         //Create gallery item
         Gallery gallery = new Gallery();
 
@@ -70,20 +96,25 @@ public class SamplePlugin extends AntelliPlugin {
                     .setCommand(new Command(ACTION_CLICK).putString(PARAM_NAME, langContext.getString(R.string.item_gallery_click, i))));
         }
 
-        //Add gallery item to Answer
-        answer.addItem(new AnswerItem()
+        return new AnswerItem()
                 .setType(AnswerItem.TYPE_GALLERY)
-                .setGallery(gallery));
+                .setGallery(gallery);
+    }
 
-        //Add tips for user (can be used as question, or can include command)
+    private List<Tip> createSampleTips(){
+        List<Tip> tips = new ArrayList<>();
+
+        //Add Tips with String only - after click will be used as question
         String[] keywords = langContext.getResources().getStringArray(R.array.keywords);
         for (String keyword : keywords) {
-            answer.addTip(new Tip(keyword));
+            tips.add(new Tip(keyword));
         }
-        answer.addTip(new Tip(langContext.getString(R.string.tip), new Command(ACTION_CLICK).putString(PARAM_NAME, langContext.getString(R.string.tip_click))));
 
-        callback.publish(answer);
+        //Add Tip with Command - after click will be command() method executed
+        tips.add(new Tip(langContext.getString(R.string.tip), new Command(ACTION_CLICK).putString(PARAM_NAME, langContext.getString(R.string.tip_click))));
+        return tips;
     }
+
 
     @Override
     protected void command(Command command, IAnswerCallback callback) throws RemoteException {
