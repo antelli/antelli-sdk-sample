@@ -1,6 +1,7 @@
 package io.antelli.sampleplugin;
 
-import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.RemoteException;
 
 import java.util.ArrayList;
@@ -8,12 +9,12 @@ import java.util.List;
 
 import io.antelli.sdk.AntelliPlugin;
 import io.antelli.sdk.callback.IAnswerCallback;
+import io.antelli.sdk.callback.ICanAnswerCallback;
 import io.antelli.sdk.model.Answer;
 import io.antelli.sdk.model.AnswerItem;
 import io.antelli.sdk.model.Command;
-import io.antelli.sdk.model.Gallery;
+import io.antelli.sdk.model.Hint;
 import io.antelli.sdk.model.Question;
-import io.antelli.sdk.model.Tip;
 
 /**
  * Handcrafted by Štěpán Šonský on 31.10.2017.
@@ -22,21 +23,15 @@ import io.antelli.sdk.model.Tip;
 public class SamplePlugin extends AntelliPlugin {
 
     private static final String ACTION_CLICK = "click";
-    private static final String PARAM_NAME = "NAME";
-
-    Context langContext;
+    private static final String PARAM_TEXT = "TEXT";
 
     @Override
-    protected boolean canAnswer(Question question) throws RemoteException {
-        Context langContext = getContext(question.getLanguage());
-        return question.containsOne(langContext.getResources().getStringArray(R.array.keywords));
+    protected void canAnswer(Question question, ICanAnswerCallback callback) throws RemoteException {
+        callback.canAnswer(question.containsOne(getResources().getStringArray(R.array.keywords)));
     }
 
     @Override
     protected void answer(Question question, IAnswerCallback callback) throws RemoteException {
-
-        //Get localized context for multilanguage plugins (you can get strings in question's language from it)
-        langContext = getContext(question.getLanguage());
 
         //You can create Answer easily using builder pattern
         Answer answer = new Answer()
@@ -46,92 +41,98 @@ public class SamplePlugin extends AntelliPlugin {
                 .addItem(createSampleCardItem())
                 //Add card image item
                 .addItem(createSampleCardImageItem())
-                //Add gallery item
-                .addItem(createGalleryItem());
+                //Add carousel item
+                .addItem(createCarouselItem());
 
-        //Add tips to Answer
-        answer.setTips(createSampleTips());
+        //Add Hints to Answer
+        answer.setHints(createSampleHints());
 
         //Publish Answer to Antelli
-        callback.publish(answer);
+        callback.answer(answer);
     }
 
-    private AnswerItem createSampleConversationItem(){
+    private AnswerItem createSampleConversationItem() {
         return new AnswerItem()
-                .setTitle(langContext.getString(R.string.item1_title))
-                .setSubtitle(langContext.getString(R.string.item1_subtitle))
-                .setText(langContext.getString(R.string.item1_text))
-                .setSpeech(langContext.getString(R.string.item1_text))
-                .setCommand(new Command(ACTION_CLICK).putString(PARAM_NAME, langContext.getString(R.string.item_click, 1)));
+                .setTitle(getString(R.string.item1_title))
+                .setSubtitle(getString(R.string.item1_subtitle))
+                .setText(getString(R.string.item1_text))
+                .setSpeech(getString(R.string.item1_text))
+                .setCommand(new Command(ACTION_CLICK).putString(PARAM_TEXT, getString(R.string.item_click, 1)));
     }
 
-    private AnswerItem createSampleCardItem(){
+    private AnswerItem createSampleCardItem() {
         return new AnswerItem()
-                .setTitle(langContext.getString(R.string.item2_title))
-                .setText(langContext.getString(R.string.item2_text))
-                .setImage("http://lorempixel.com/400/200")
+                .setTitle(getString(R.string.item2_title))
+                .setText(getString(R.string.item2_text))
+                .setImage("https://picsum.photos/1280/720?random")
                 .setType(AnswerItem.TYPE_CARD)
-                .setCommand(new Command(ACTION_CLICK).putString(PARAM_NAME, langContext.getString(R.string.item_click, 2)));
+                .setCommand(new Command(ACTION_CLICK).putString(PARAM_TEXT, getString(R.string.item_click, 2)));
     }
 
-    private AnswerItem createSampleCardImageItem(){
+    private AnswerItem createSampleCardImageItem() {
         return new AnswerItem()
-                .setTitle(langContext.getString(R.string.item3_title))
-                .setText(langContext.getString(R.string.item3_text))
-                .setImage("http://lorempixel.com/400/200")
-                .setCommand(new Command(ACTION_CLICK).putString(PARAM_NAME, langContext.getString(R.string.item_click, 3)))
-                .setType(AnswerItem.TYPE_CARD_IMAGE);
+                .setTitle(getString(R.string.item3_title))
+                .setText(getString(R.string.item3_text))
+                .setImage("https://picsum.photos/1280/720?random")
+                .setCommand(new Command(ACTION_CLICK).putString(PARAM_TEXT, getString(R.string.item_click, 3)))
+                .setType(AnswerItem.TYPE_IMAGE);
     }
 
-    private AnswerItem createGalleryItem(){
-        //Create gallery item
-        Gallery gallery = new Gallery();
+    private AnswerItem createCarouselItem() {
+        //Create carousel item
+        List<AnswerItem> subItems = new ArrayList<>();
 
-        //Fill gallery item
+        //Fill carousel item
         for (int i = 1; i < 6; i++) {
-            gallery.addItem(new AnswerItem()
-                    .setTitle(langContext.getString(R.string.item4_title, i))
-                    .setSubtitle(langContext.getString(R.string.item4_subtitle))
-                    .setImage("http://lorempixel.com/400/200")
-                    .setCommand(new Command(ACTION_CLICK).putString(PARAM_NAME, langContext.getString(R.string.item_gallery_click, i))));
+            subItems.add(new AnswerItem()
+                    .setTitle(getString(R.string.item4_subitem_title, i))
+                    .setSubtitle(getString(R.string.item4_subitem_subtitle))
+                    .setImage("https://picsum.photos/1280/720?random")
+                    .setCommand(new Command(ACTION_CLICK).putString(PARAM_TEXT, getString(R.string.item_carousel_click, i))));
         }
 
         return new AnswerItem()
-                .setType(AnswerItem.TYPE_GALLERY)
-                .setGallery(gallery);
+                .setTitle(getString(R.string.item4_title))
+                .setText(getString(R.string.item4_text))
+                .setType(AnswerItem.TYPE_CAROUSEL_SMALL)
+                .setItems(subItems);
     }
 
-    private List<Tip> createSampleTips(){
-        List<Tip> tips = new ArrayList<>();
+    private List<Hint> createSampleHints() {
+        List<Hint> Hints = new ArrayList<>();
 
-        //Add Tips with String only - after click will be used as question
-        String[] keywords = langContext.getResources().getStringArray(R.array.keywords);
-        for (String keyword : keywords) {
-            tips.add(new Tip(keyword));
-        }
+        //Add Hint with String only - after click will be used as user's question
+        Hints.add(new Hint("Hello World"));
 
-        //Add Tip with Command - after click will be command() method executed
-        tips.add(new Tip(langContext.getString(R.string.tip), new Command(ACTION_CLICK).putString(PARAM_NAME, langContext.getString(R.string.tip_click))));
-        return tips;
+        //Add Hint with Command - after click command() method will be executed
+        Hints.add(new Hint(getString(R.string.command_hint), new Command(ACTION_CLICK).putString(PARAM_TEXT, getString(R.string.hint_click))));
+
+        //Add Hint with Intent - after click Intent will be executed (only ACTION_VIEW is supported)
+        Hints.add(new Hint(getString(R.string.intent_hint), new Command(new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.antelli.io")))));
+
+        //Add Hint with Intent - after click Google Maps will be opened
+        Hints.add(new Hint(getString(R.string.app_hint), new Command(getPackageManager().getLaunchIntentForPackage("com.google.android.apps.maps"))));
+        return Hints;
     }
 
 
     @Override
     protected void command(Command command, IAnswerCallback callback) throws RemoteException {
-        //Handle clicks depending on action and params from Command
+        //Handle clicks depending on action and params from the Command
         switch (command.getAction()) {
             case ACTION_CLICK:
-                callback.publish(new Answer(command.getString(PARAM_NAME)));
+                callback.answer(new Answer(command.getString(PARAM_TEXT)));
         }
     }
 
     @Override
     protected Class getSettingsActivity() {
+        //If your plugin has settings, return activity class here
         return SettingsActivity.class;
     }
 
     @Override
     protected void reset() {
-
+        //Reset here your state variables (if you have any) to default values
     }
 }

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="plugin_title">Sample Antelli Plugin</string>
-    <string name="plugin_author">Štěpán Šonský</string>
+    <string name="plugin_name">Sample Antelli Plugin</string>
+    <string name="plugin_author">Antelli.io</string>
+    <string name="plugin_email">support@antelli.io</string>
     <string name="plugin_description">Hello World Plugin for Antelli Open Assistant.</string>
     <string name="plugin_samples">Hello world;Android demo;</string>
-    <string name="plugin_languages">en;cs</string>
+    <string name="plugin_languages">en</string>
     <bool name="plugin_settings">true</bool>
 </resources>
