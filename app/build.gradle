@@ -26,7 +26,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:28.0.0-alpha3'
 
     //Antelli SDK
-    compile 'io.antelli:sdk:1.2.0'
+    compile 'io.antelli:sdk:1.2.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 repositories {
