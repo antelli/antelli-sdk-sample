@@ -44,8 +44,8 @@ public class SamplePlugin extends AntelliPlugin {
                 //Add carousel item
                 .addItem(createCarouselItem());
 
-        //Add Hints to Answer
-        answer.setHints(createSampleHints());
+        //Add Hints to the last AnswerItem
+        answer.getItems().get(answer.getItems().size()-1).setHints(createSampleHints());
 
         //Publish Answer to Antelli
         callback.answer(answer);
