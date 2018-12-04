@@ -38,14 +38,11 @@
                 android:name="samples"
                 android:value="@string/plugin_samples" />
             <meta-data
-                android:name="languages"
-                android:value="@string/plugin_languages" />
-            <meta-data
                 android:name="settings"
                 android:value="@bool/plugin_settings" />
             <meta-data
                 android:name="api_version"
-                android:value="@string/antelli_sdk_version" />
+                android:value="@string/antelli_api_version" />
         </service>
     </application>
 

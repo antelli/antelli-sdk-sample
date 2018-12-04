@@ -5,6 +5,5 @@
     <string name="plugin_email">support@antelli.io</string>
     <string name="plugin_description">Hello World Plugin for Antelli Open Assistant.</string>
     <string name="plugin_samples">Hello world;Android demo;</string>
-    <string name="plugin_languages">en</string>
     <bool name="plugin_settings">true</bool>
 </resources>
