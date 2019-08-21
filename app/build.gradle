@@ -26,7 +26,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.2'
 
     //Antelli SDK
-    implementation 'io.antelli:sdk:1.4.2'
+    implementation 'io.antelli:sdk:1.4.3'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
